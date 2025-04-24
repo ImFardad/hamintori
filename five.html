@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0a0a0a;
+            --primary-green: #10b981;
+            --primary-red: #ef4444;
+            --accent-green: rgba(16, 185, 129, 0.1);
+            --accent-red: rgba(239, 68, 68, 0.1);
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-dark);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #111827 100%);
+            overflow: hidden;
+        }
+        
+        .animated-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--accent-green) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, var(--accent-red) 0%, transparent 20%);
+            opacity: 0.5;
+            animation: bgPulse 15s infinite alternate;
+        }
+        
+        .animated-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: bgMove 100s linear infinite;
+        }
+        
+        @keyframes bgPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes bgMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+        
+        .featured-slide {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+        }
+        
+        .gallery-item {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+        
+        .gallery-item .item-info {
+            transform: translateY(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover .item-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        
+        .slide-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .slide-btn:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-layout {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Header -->
+        <header class="flex justify-between items-center py-6 fade-in">
+            <div>
+                <h1 class="title-font text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">
+                    Design Gallery
+                </h1>
+                <p class="text-gray-400 text-sm mt-1">Visual storytelling through design</p>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8">
+                    <li><a href="#" class="nav-link text-white hover:text-emerald-400">Work</a></li>
+                    <li><a href="#" class="nav-link text-white hover:text-emerald-400">About</a></li>
+                    <li><a href="#" class="nav-link text-white hover:text-emerald-400">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </header>
+        
+        <!-- Featured Works Slider -->
+        <section class="my-16 fade-in delay-1">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="title-font text-2xl md:text-3xl font-semibold text-white">
+                    Featured Works
+                </h2>
+                <div class="flex space-x-4">
+                    <button class="slide-btn w-10 h-10 rounded-full bg-black bg-opacity-30 text-white flex items-center justify-center border border-gray-700">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slide-btn w-10 h-10 rounded-full bg-black bg-opacity-30 text-white flex items-center justify-center border border-gray-700">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="relative h-96 md:h-[32rem] overflow-hidden rounded-xl">
+                <div class="absolute inset-0 flex transition-transform duration-1000 ease-out" id="featured-slider">
+                    <!-- Slide 1 -->
+                    <div class="featured-slide min-w-full h-full relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-black via-emerald-900 to-black opacity-70"></div>
+                        <img src="https://source.unsplash.com/random/1200x800/?design,1" alt="Design Work" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 p-8 max-w-2xl">
+                            <span class="text-emerald-400 text-sm font-medium">Brand Identity</span>
+                            <h3 class="title-font text-2xl md:text-4xl font-bold text-white mt-2">Minimalist Brand Design</h3>
+                            <p class="text-gray-300 mt-4">A clean and modern brand identity for a tech startup focusing on simplicity and elegance.</p>
+                            <button class="mt-6 px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all duration-300 transform hover:scale-105">
+                                View Project
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2 -->
+                    <div class="featured-slide min-w-full h-full relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-black via-red-900 to-black opacity-70"></div>
+                        <img src="https://source.unsplash.com/random/1200x800/?design,2" alt="Design Work" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 p-8 max-w-2xl">
+                            <span class="text-red-400 text-sm font-medium">Editorial Design</span>
+                            <h3 class="title-font text-2xl md:text-4xl font-bold text-white mt-2">Magazine Layout</h3>
+                            <p class="text-gray-300 mt-4">Editorial design for a lifestyle magazine with bold typography and striking imagery.</p>
+                            <button class="mt-6 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-all duration-300 transform hover:scale-105">
+                                View Project
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3 -->
+                    <div class="featured-slide min-w-full h-full relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-black via-emerald-900 to-black opacity-70"></div>
+                        <img src="https://source.unsplash.com/random/1200x800/?design,3" alt="Design Work" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 p-8 max-w-2xl">
+                            <span class="text-emerald-400 text-sm font-medium">Web Design</span>
+                            <h3 class="title-font text-2xl md:text-4xl font-bold text-white mt-2">E-commerce Platform</h3>
+                            <p class="text-gray-300 mt-4">User-friendly interface design for an online store with intuitive navigation.</p>
+                            <button class="mt-6 px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all duration-300 transform hover:scale-105">
+                                View Project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Gallery Grid -->
+        <section class="my-16 fade-in delay-2">
+            <h2 class="title-font text-2xl md:text-3xl font-semibold text-white mb-8">
+                Recent Works
+            </h2>
+            
+            <div class="grid-layout">
+                <!-- Item 1 -->
+                <div class="gallery-item relative rounded-xl overflow-hidden aspect-square bg-gray-900">
+                    <img src="https://source.unsplash.com/random/600x600/?design,4" alt="Design Work" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 p-6 item-info">
+                        <h3 class="title-font text-xl font-semibold text-white">Packaging Design</h3>
+                        <p class="text-gray-300 text-sm mt-1">Eco-friendly product packaging</p>
+                    </div>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="gallery-item relative rounded-xl overflow-hidden aspect-square bg-gray-900">
+                    <img src="https://source.unsplash.com/random/600x600/?design,5" alt="Design Work" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 p-6 item-info">
+                        <h3 class="title-font text-xl font-semibold text-white">Logo Design</h3>
+                        <p class="text-gray-300 text-sm mt-1">Modern logo for fashion brand</p>
+                    </div>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="gallery-item relative rounded-xl overflow-hidden aspect-square bg-gray-900">
+                    <img src="https://source.unsplash.com/random/600x600/?design,6" alt="Design Work" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 p-6 item-info">
+                        <h3 class="title-font text-xl font-semibold text-white">Poster Series</h3>
+                        <p class="text-gray-300 text-sm mt-1">Music festival promotional posters</p>
+                    </div>
+                </div>
+                
+                <!-- Item 4 -->
+                <div class="gallery-item relative rounded-xl overflow-hidden aspect-square bg-gray-900">
+                    <img src="https://source.unsplash.com/random/600x600/?design,7" alt="Design Work" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 p-6 item-info">
+                        <h3 class="title-font text-xl font-semibold text-white">Book Cover</h3>
+                        <p class="text-gray-300 text-sm mt-1">Literary fiction book design</p>
+                    </div>
+                </div>
+                
+                <!-- Item 5 -->
+                <div class="gallery-item relative rounded-xl overflow-hidden aspect-square bg-gray-900">
+                    <img src="https://source.unsplash.com/random/600x600/?design,8" alt="Design Work" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 p-6 item-info">
+                        <h3 class="title-font text-xl font-semibold text-white">UI/UX Design</h3>
+                        <p class="text-gray-300 text-sm mt-1">Mobile app interface</p>
+                    </div>
+                </div>
+                
+                <!-- Item 6 -->
+                <div class="gallery-item relative rounded-xl overflow-hidden aspect-square bg-gray-900">
+                    <img src="https://source.unsplash.com/random/600x600/?design,9" alt="Design Work" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 p-6 item-info">
+                        <h3 class="title-font text-xl font-semibold text-white">Typography</h3>
+                        <p class="text-gray-300 text-sm mt-1">Experimental type design</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in delay-3">
+                <button class="px-8 py-3 bg-transparent border border-emerald-600 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-full transition-all duration-300 transform hover:scale-105">
+                    View All Works
+                </button>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="mt-24 pb-12 border-t border-gray-800 pt-12 fade-in delay-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="title-font text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">
+                        Design Gallery
+                    </h2>
+                    <p class="text-gray-500 text-sm mt-2">© 2023 All rights reserved</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">
+                        <i class="fab fa-behance text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">
+                        <i class="fab fa-dribbble text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Featured slider functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.featured-slide');
+        const slider = document.getElementById('featured-slider');
+        const slideCount = slides.length;
+        
+        function goToSlide(index) {
+            if (index < 0) index = slideCount - 1;
+            if (index >= slideCount) index = 0;
+            
+            currentSlide = index;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        
+        // Auto slide change
+        let slideInterval = setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Navigation buttons
+        document.querySelectorAll('.slide-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                if (index === 0) {
+                    goToSlide(currentSlide - 1);
+                } else {
+                    goToSlide(currentSlide + 1);
+                }
+                slideInterval = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+            });
+        });
+        
+        // Fade-in animation on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeInOnScroll = () => {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            // Initial check
+            fadeInOnScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', fadeInOnScroll);
+        });
+    </script>
+</body>
+</html>
